@@ -6,6 +6,8 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import About from '@/components/About';
+import Footer from '@/components/Footer';
 // import Experience from '@/components/Experience';
 // import Education from '@/components/Education';
 // import Skills from '@/components/Skills';
@@ -26,10 +28,10 @@ const Index = () => {
     <div ref={mainRef} className="min-h-screen">
       <Navbar />
       <Hero/>
-      {/* <div className="section-reveal">
+      <div className="section-reveal">
         <About />
       </div>
-      <div className="section-reveal">
+      {/* <div className="section-reveal">
         <Experience />
       </div>
       <div className="section-reveal">
@@ -47,7 +49,7 @@ const Index = () => {
       <div className="section-reveal">
         <Contact />
       </div> */}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };
