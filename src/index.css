@@ -433,3 +433,115 @@
 .gsap-marker-end {
   display: none !important;
 }
+
+
+/* Floating tech items */
+.floating-tech-container {
+    pointer-events: none;
+  }
+  
+  .floating-tech-item {
+    position: absolute;
+    font-family: monospace;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 0 8px rgba(0, 100, 255, 0.5);
+    pointer-events: none;
+    white-space: nowrap;
+    filter: blur(0.5px);
+    will-change: transform;
+  }
+  
+  .floating-tech-item .tech-icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+  
+  /* Existing particle styles */
+  .hero-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float-particle linear infinite;
+  }
+  
+  @keyframes float-particle {
+    0% {
+      transform: translateY(0) translateX(0);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(-100px) translateX(100px);
+      opacity: 0;
+    }
+  }
+  
+  
+  /* Tech grid container */
+  .tech-container {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Tech item styling */
+  .tech-item {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transform-origin: center center;
+    will-change: transform;
+    transition: filter 0.3s ease;
+    width: 120px;
+    height: 120px;
+    margin-left: -60px; /* Half width for true centering */
+    margin-top: -60px;  /* Half height for true centering */
+    transform: translate3d(0, 0, 0); /* Force GPU acceleration */
+  }
+  
+  /* Icon */
+  .tech-item .tech-icon {
+    font-size: 2.5rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.7));
+  }
+  
+  /* Name */
+  .tech-item .tech-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    margin-top: 8px;
+    text-shadow: 0 0 15px rgba(0, 100, 255, 0.8);
+    white-space: nowrap;
+  }
+  
+  /* Custom glowing effect */
+  @keyframes tech-glow {
+    0%, 100% {
+      filter: drop-shadow(0 0 5px rgba(37, 99, 235, 0.5));
+    }
+    50% {
+      filter: drop-shadow(0 0 15px rgba(37, 99, 235, 1));
+    }
+  }
+  
+  .tech-item .tech-icon {
+    animation: tech-glow 3s infinite ease-in-out;
+  }
