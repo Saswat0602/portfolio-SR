@@ -7,6 +7,5 @@ export const aboutData = {
     ],
     location: "Bhubaneswar, Odisha, India",
     email: "contact@saswatmohanty.com",
-    imageUrl: "3f05-4961-94ce-33c519aa6833.png"
   };
   
