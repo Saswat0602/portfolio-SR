@@ -12,6 +12,7 @@ import RubiksCubeScene from "./components/RubiksCube";
 import FullScreenGlobe from "./components/GlobeComponent";
 import DinoGame from "./components/DinoGame";
 import SnakeGame from "./components/SnakeGame";
+import GalaxyScene from "./components/GalaxyScene";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/torus" element={<TorusKnotPage />} /> 
           <Route path="/cube" element={<RubiksCubeScene />} />
           <Route path="/dino" element={<SnakeGame />} />
+          <Route path="/gala" element={<GalaxyScene />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
