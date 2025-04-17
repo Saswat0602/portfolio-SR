@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,20 +7,23 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SplashCursor from "./reactbits/SplashCursor";
 import Playground from "./components/Playground";
+import TorusKnotPage from "./pages/TorusKnot";
+import RubiksCubeScene from "./components/RubiksCube";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster /> 
-      <SplashCursor/>
+      <Toaster />
+      <SplashCursor />
       <Sonner />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="/playground" element={<Playground />} /> 
+          <Route path="/playground" element={<Playground />} />
+          <Route path="/torus" element={<TorusKnotPage />} /> {/* ✅ NEW */}
+          <Route path="/cube" element={<RubiksCubeScene />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
