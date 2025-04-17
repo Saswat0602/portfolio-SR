@@ -2,9 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { technologies } from '@/data/hero';
 
-// Register plugins
 gsap.registerPlugin(TextPlugin, ScrollTrigger);
 
 export const useHeroAnimation = () => {
@@ -13,7 +11,6 @@ export const useHeroAnimation = () => {
   const buttonsRef = useRef(null);
   const typingRef = useRef(null);
   const particlesRef = useRef(null);
-  const techItemsRef = useRef(null);
   const cursorRef = useRef(null);
 
   useEffect(() => {
@@ -25,12 +22,10 @@ export const useHeroAnimation = () => {
 
       if (!hero || !text || !buttons || !typing) return;
 
-      setupFloatingTechItems();
       setupParticles();
       setupTextAnimation();
       setupScrollTrigger();
 
-      // Cursor follow
       if (cursorRef.current) {
         const cursor = cursorRef.current;
         const moveCursor = (e: MouseEvent) => {
@@ -56,95 +51,6 @@ export const useHeroAnimation = () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
-
-  const setupFloatingTechItems = () => {
-    if (techItemsRef.current) {
-      techItemsRef.current.innerHTML = '';
-
-      for (let i = 0; i < 20; i++) {
-        const randomTech = technologies[Math.floor(Math.random() * technologies.length)];
-        const techItem = document.createElement('div');
-        techItem.classList.add('tech-item');
-
-        const iconSpan = document.createElement('span');
-        iconSpan.classList.add('tech-icon');
-        iconSpan.textContent = randomTech.icon;
-
-        const textSpan = document.createElement('span');
-        textSpan.classList.add('tech-name');
-        textSpan.textContent = randomTech.name;
-
-        techItem.appendChild(iconSpan);
-        techItem.appendChild(textSpan);
-
-        const xPos = Math.random() * 90 + 5;
-        const yPos = Math.random() * 90 + 5;
-
-        techItem.style.left = `${xPos}%`;
-        techItem.style.top = `${yPos}%`;
-        techItem.style.opacity = `${Math.random() * 0.5 + 0.2}`;
-
-        techItemsRef.current.appendChild(techItem);
-        createRandomMovement(techItem);
-      }
-    }
-  };
-
-  const createRandomMovement = (element: HTMLElement) => {
-    const startX = parseFloat(element.style.left);
-    const startY = parseFloat(element.style.top);
-
-    const movementTimeline = gsap.timeline({
-      repeat: -1,
-      yoyo: false,
-      onRepeat: () => {
-        movementTimeline.clear();
-        const randomX = startX + (Math.random() * 20 - 10);
-        const randomY = startY + (Math.random() * 20 - 10);
-
-        const boundedX = Math.max(5, Math.min(95, randomX));
-        const boundedY = Math.max(5, Math.min(95, randomY));
-
-        const duration = Math.random() * 10 + 10;
-
-        movementTimeline.to(element, {
-          left: `${boundedX}%`,
-          top: `${boundedY}%`,
-          duration: duration,
-          ease: "sine.inOut"
-        });
-      }
-    });
-
-    const initialX = startX + (Math.random() * 20 - 10);
-    const initialY = startY + (Math.random() * 20 - 10);
-    const boundedX = Math.max(5, Math.min(95, initialX));
-    const boundedY = Math.max(5, Math.min(95, initialY));
-
-    movementTimeline.to(element, {
-      left: `${boundedX}%`,
-      top: `${boundedY}%`,
-      duration: Math.random() * 10 + 10,
-      ease: "sine.inOut"
-    });
-
-    gsap.to(element, {
-      scale: `random(0.8, 1.2)`,
-      rotation: `random(-15, 15)`,
-      duration: Math.random() * 5 + 3,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
-
-    gsap.to(element, {
-      filter: `blur(${Math.random() * 2}px)`,
-      duration: Math.random() * 3 + 2,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
-  };
 
   const setupParticles = () => {
     if (particlesRef.current) {
@@ -214,7 +120,6 @@ export const useHeroAnimation = () => {
     buttonsRef,
     typingRef,
     particlesRef,
-    techItemsRef,
     cursorRef
   };
 };

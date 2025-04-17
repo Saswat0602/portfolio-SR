@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { technologies } from '@/data/hero';
 
 import '@/styles/hero.css';
 import { useHeroAnimation } from '@/hooks/useHeroAnimation';
@@ -20,7 +19,6 @@ const Hero = () => {
     buttonsRef,
     typingRef,
     particlesRef,
-    techItemsRef,
     cursorRef
   } = useHeroAnimation();
 
@@ -32,7 +30,6 @@ const Hero = () => {
       className="relative min-h-[90vh] bg-hero-pattern bg-cover bg-center flex items-center overflow-hidden"
     >
       <div ref={particlesRef} className="particles-container absolute inset-0 z-0"></div>
-      <div ref={techItemsRef} className="tech-container absolute inset-0 z-[1] overflow-hidden"></div>
       <div ref={cursorRef} className="custom-cursor z-[100] pointer-events-none"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-dark/90 to-dark/70 z-[2]"></div>
 
