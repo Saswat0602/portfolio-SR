@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SplashCursor from "./reactbits/SplashCursor";
+import Playground from "./components/Playground";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/playground" element={<Playground />} /> 
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

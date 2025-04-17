@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'lucide-react';
@@ -18,7 +17,8 @@ const Navbar = () => {
           <Link to="/" className="text-xl md:text-2xl font-bold text-dark">
             Saswat<span className="text-tech-blue">.dev</span>
           </Link>
-          
+
+          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/#about" className="text-gray-700 hover:text-tech-blue transition-colors">
               About
@@ -38,11 +38,15 @@ const Navbar = () => {
             <Link to="/#certifications" className="text-gray-700 hover:text-tech-blue transition-colors">
               Certifications
             </Link>
+            <Link to="/playground" className="text-gray-700 hover:text-tech-blue transition-colors">
+              Playground
+            </Link>
             <Button className="bg-tech-blue hover:bg-tech-purple text-white">
               Contact
             </Button>
           </div>
 
+          {/* Mobile Menu Button */}
           <div className="md:hidden">
             <Button 
               variant="ghost" 
@@ -54,6 +58,7 @@ const Navbar = () => {
           </div>
         </div>
 
+        {/* Mobile Menu Dropdown */}
         {isOpen && (
           <div className="md:hidden pt-4 pb-2 animate-fade-in">
             <div className="flex flex-col space-y-3">
@@ -98,6 +103,13 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)}
               >
                 Certifications
+              </Link>
+              <Link 
+                to="/playground" 
+                className="text-gray-700 hover:text-tech-blue transition-colors py-2"
+                onClick={() => setIsOpen(false)}
+              >
+                Playground
               </Link>
               <Button className="bg-tech-blue hover:bg-tech-purple text-white w-full">
                 Contact
