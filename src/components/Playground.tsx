@@ -58,16 +58,24 @@ const Playground = () => {
       )}
 
       {/* Render based on selection */}
-      {selectedItem === 'rubik' && (
-        <div className="py-4">
-          <RubiksCube />
-        </div>
-      )}
-      {selectedItem === 'globe' && (
-        <div>
-          <FullScreenGlobe />
-        </div>
-      )}
+
+      <div className='bg-slate-800'>
+
+        {selectedItem === 'rubik' && (
+          <div className="py-4">
+            <RubiksCube />
+          </div>
+        )}
+        {selectedItem === 'globe' && (
+          <div>
+            <FullScreenGlobe />
+          </div>
+        )}
+      </div>
+
+
+
+
     </div>
   );
 };

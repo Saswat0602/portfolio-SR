@@ -9,6 +9,9 @@ import SplashCursor from "./reactbits/SplashCursor";
 import Playground from "./components/Playground";
 import TorusKnotPage from "./pages/TorusKnot";
 import RubiksCubeScene from "./components/RubiksCube";
+import FullScreenGlobe from "./components/GlobeComponent";
+import DinoGame from "./components/DinoGame";
+import SnakeGame from "./components/SnakeGame";
 
 const queryClient = new QueryClient();
 
@@ -22,8 +25,12 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/playground" element={<Playground />} />
-          <Route path="/torus" element={<TorusKnotPage />} /> {/* ✅ NEW */}
+          <Route path="/globe" element={<FullScreenGlobe />} />
+
+          {/* GAMES */}
+          <Route path="/torus" element={<TorusKnotPage />} /> 
           <Route path="/cube" element={<RubiksCubeScene />} />
+          <Route path="/dino" element={<SnakeGame />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
