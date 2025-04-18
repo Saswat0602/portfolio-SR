@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/lib/ThemeContext';
 import data from '@/data/data.json';
@@ -66,6 +66,12 @@ const Skills = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [activeCategory, setActiveCategory] = useState("all");
+  const [forceRender, setForceRender] = useState(0);
+  
+  // Re-render on theme change to ensure proper styling
+  useEffect(() => {
+    setForceRender(prev => prev + 1);
+  }, [theme]);
   
   // Get all unique skills
   const allSkills = Object.values(categorizedSkills).flat();
@@ -110,7 +116,8 @@ const Skills = () => {
       className={`py-24 relative ${isDark 
         ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white' 
         : 'bg-gray-50 text-gray-900'
-      }`}
+      } transition-colors duration-300`}
+      key={`skills-section-${isDark ? 'dark' : 'light'}-${forceRender}`}
     >
       <div className="container mx-auto px-4">
         {/* Section Header */}
@@ -126,11 +133,11 @@ const Skills = () => {
         
         {/* Category Filters - Tab Style */}
         <div className="flex justify-center mb-12">
-          <div className={`inline-flex p-1 rounded-full shadow-sm ${isDark ? 'bg-gray-800' : 'bg-white border border-gray-200'}`}>
+          <div className={`inline-flex p-1 rounded-full shadow-sm transition-colors duration-300 ${isDark ? 'bg-gray-800' : 'bg-white border border-gray-200'}`}>
             {categories.map((category) => (
               <button
                 key={category.name}
-                className={`px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-200 ${
+                className={`px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-300 ${
                   activeCategory === category.name
                     ? isDark 
                       ? 'bg-gray-700 text-tech-blue shadow-sm' 
@@ -150,7 +157,7 @@ const Skills = () => {
         {/* Skills Cards */}
         <AnimatePresence mode="wait">
           <m.div
-            key={activeCategory}
+            key={`${activeCategory}-${isDark ? 'dark' : 'light'}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -166,18 +173,18 @@ const Skills = () => {
             >
               {filteredSkills.map((skill) => (
                 <m.div
-                  key={skill.name}
+                  key={`${skill.name}-${isDark ? 'dark' : 'light'}`}
                   variants={itemVariants}
                   whileHover={{ 
                     scale: 1.05,
                     boxShadow: `0 4px 20px ${skill.color}20`,
                     transition: { duration: 0.2 } 
                   }}
-                  className={`flex flex-col items-center justify-center p-5 rounded-lg ${
+                  className={`flex flex-col items-center justify-center p-5 rounded-lg transition-all duration-300 ${
                     isDark 
                       ? 'bg-gray-800 border border-gray-700' 
                       : 'bg-white border border-gray-200 shadow-sm'
-                  } transition-all duration-200`}
+                  }`}
                 >
                   <div className="mb-3">
                     <skill.icon 
@@ -197,7 +204,7 @@ const Skills = () => {
         
         {/* Currently Learning */}
         <div 
-          className={`mt-16 p-6 rounded-lg max-w-3xl mx-auto text-center ${
+          className={`mt-16 p-6 rounded-lg max-w-3xl mx-auto text-center transition-colors duration-300 ${
             isDark ? 'bg-gray-800/50 border border-gray-700' : 'bg-white border border-gray-200 shadow-sm'
           }`}
         >
@@ -208,7 +215,7 @@ const Skills = () => {
             {['Advanced TypeScript', 'AWS Solutions', 'GraphQL', 'Next.js 14'].map(skill => (
               <span 
                 key={skill} 
-                className={`px-4 py-2 text-sm rounded-lg ${
+                className={`px-4 py-2 text-sm rounded-lg transition-colors duration-300 ${
                   isDark 
                     ? 'bg-tech-blue/10 text-tech-blue border border-tech-blue/30' 
                     : 'bg-tech-blue/10 text-tech-blue border border-tech-blue/20'

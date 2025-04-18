@@ -5,11 +5,13 @@ type Theme = 'light' | 'dark';
 interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
+  isTransitioning: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
   toggleTheme: () => {},
+  isTransitioning: false,
 });
 
 export const useTheme = () => useContext(ThemeContext);
@@ -32,15 +34,31 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Update the data-theme attribute on HTML element
+  // Update the data-theme attribute on HTML element with transition
   const updateTheme = (newTheme: Theme) => {
     const root = window.document.documentElement;
+    
+    // Start transition
+    setIsTransitioning(true);
+    
+    // Add transition classes if not already present
+    if (!root.classList.contains('transition-colors')) {
+      root.classList.add('transition-colors', 'duration-500');
+    }
+    
+    // Set new theme
     root.setAttribute('data-theme', newTheme);
     root.classList.remove('light', 'dark');
     root.classList.add(newTheme);
     
     localStorage.setItem('color-theme', newTheme);
+    
+    // End transition after animation completes
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 500); // Match this with the duration class (duration-500)
   };
 
   // Update theme when the component mounts
@@ -49,12 +67,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    if (!isTransitioning) {
+      setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    }
   };
 
   const value = {
     theme,
     toggleTheme,
+    isTransitioning,
   };
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

@@ -9,6 +9,7 @@ import LoadingScreen from "./components/LoadingScreen";
 import { routes } from "./lib/config";
 import { ThemeProvider } from "./lib/ThemeContext";
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
+import Footer from '@/components/Footer';
 
 // Define a priority loading mechanism for critical components
 const withPriorityLoading = (importFn: () => Promise<any>) => {
@@ -114,6 +115,54 @@ const App = () => {
       // When resources are loaded, set loading to false
       setIsLoading(false);
     });
+  }, []);
+
+  useEffect(() => {
+    // Set up smooth scrolling for the whole application
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
+    // Add a class for transitioning theme colors globally
+    document.documentElement.classList.add('transition-colors');
+    document.documentElement.classList.add('duration-500');
+    
+    // Simulate loading resources
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  // Handle anchor link clicks for smooth scrolling to sections
+  useEffect(() => {
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest('a[href^="#"]');
+      
+      if (anchor) {
+        e.preventDefault();
+        const targetId = anchor.getAttribute('href')?.substring(1);
+        
+        if (targetId) {
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            // Scroll to the element with smooth behavior
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+            
+            // Update URL without refreshing page
+            window.history.pushState(null, '', `#${targetId}`);
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
+    
+    return () => {
+      document.removeEventListener('click', handleAnchorClick);
+    };
   }, []);
 
   return (
