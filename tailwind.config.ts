@@ -69,7 +69,7 @@ export default {
   			}
   		},
   		backgroundImage: {
-  			'hero-pattern': 'linear-gradient(to right, rgba(23,25,35,0.9), rgba(23,25,35,0.8)), url("/lovable-uploads/fc98a385-d6e5-4e12-a9fc-8ae42f324425.png")'
+  			'hero-pattern': 'linear-gradient(to right, rgba(23,25,35,0.9), rgba(23,25,35,0.8))'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

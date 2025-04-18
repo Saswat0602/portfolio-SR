@@ -13,6 +13,8 @@ import FullScreenGlobe from "./components/GlobeComponent";
 import DinoGame from "./components/DinoGame";
 import SnakeGame from "./components/SnakeGame";
 import GalaxyScene from "./components/GalaxyScene";
+import Cube2 from "./components/cube2";
+import RubiksCubeShuffle from "./components/InfiniteShuffle";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +35,8 @@ const App = () => (
           <Route path="/cube" element={<RubiksCubeScene />} />
           <Route path="/dino" element={<SnakeGame />} />
           <Route path="/gala" element={<GalaxyScene />} />
+          <Route path="/Cube2" element={<Cube2 />} />
+          <Route path="/Cube3" element={<RubiksCubeShuffle />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
