@@ -13,6 +13,8 @@ import SnakeGame from "./components/SnakeGame";
 import GalaxyScene from "./components/GalaxyScene";
 import Cube2 from "./components/cube2";
 import RubiksCubeShuffle from "./components/InfiniteShuffle";
+import CosmicSphere from "./components/CosmicSphere";
+import CosmicSphereNew from "./components/CosmicSphereNew";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +36,12 @@ const App = () => (
           <Route path="/gala" element={<GalaxyScene />} />
           <Route path="/Cube2" element={<Cube2 />} />
           <Route path="/Cube3" element={<RubiksCubeShuffle />} />
+          <Route path="/CosmicSphere" element={<CosmicSphere />} />
+          <Route path="/new" element={<CosmicSphereNew />} />
+
+
+
+
           ArcadeSpaceShooter
           <Route path="*" element={<NotFound />} />
         </Routes>
