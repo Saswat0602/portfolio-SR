@@ -7,7 +7,6 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SplashCursor from "./reactbits/SplashCursor";
 import Playground from "./components/Playground";
-import TorusKnotPage from "./pages/TorusKnot";
 import RubiksCubeScene from "./components/RubiksCube";
 import FullScreenGlobe from "./components/GlobeComponent";
 import DinoGame from "./components/DinoGame";
@@ -31,13 +30,12 @@ const App = () => (
           <Route path="/globe" element={<FullScreenGlobe />} />
 
           {/* GAMES */}
-          <Route path="/torus" element={<TorusKnotPage />} /> 
           <Route path="/cube" element={<RubiksCubeScene />} />
           <Route path="/dino" element={<SnakeGame />} />
           <Route path="/gala" element={<GalaxyScene />} />
           <Route path="/Cube2" element={<Cube2 />} />
           <Route path="/Cube3" element={<RubiksCubeShuffle />} />
-
+          ArcadeSpaceShooter
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
