@@ -1,16 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+
+// Hero.tsx
+import React from 'react';
 import { ArrowDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
-import gsap from 'gsap';
-import { TextPlugin } from 'gsap/TextPlugin';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
 import '@/styles/hero.css';
 import { useHeroAnimation } from '@/hooks/useHeroAnimation';
-
-// Register plugins
-gsap.registerPlugin(TextPlugin, ScrollTrigger);
+import GalaxyScene from '@/components/GalaxyScene';
 
 const Hero = () => {
   const {
@@ -22,13 +18,13 @@ const Hero = () => {
     cursorRef
   } = useHeroAnimation();
 
-
-
   return (
     <section
       ref={heroRef}
-      className="relative min-h-[90vh] bg-hero-pattern bg-cover bg-center flex items-center overflow-hidden"
+      className="relative min-h-[90vh] flex items-center overflow-hidden"
     >
+      <GalaxyScene />
+
       <div ref={particlesRef} className="particles-container absolute inset-0 z-0"></div>
       <div ref={cursorRef} className="custom-cursor z-[100] pointer-events-none"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-dark/90 to-dark/70 z-[2]"></div>
