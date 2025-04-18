@@ -14,7 +14,7 @@ import GalaxyScene from "./components/GalaxyScene";
 import Cube2 from "./components/cube2";
 import RubiksCubeShuffle from "./components/InfiniteShuffle";
 import CosmicSphere from "./components/CosmicSphere";
-import CosmicSphereNew from "./components/CosmicSphereNew";
+import CarGame from "./components/CarDrivingSimulation";
 
 const queryClient = new QueryClient();
 
@@ -37,7 +37,7 @@ const App = () => (
           <Route path="/Cube2" element={<Cube2 />} />
           <Route path="/Cube3" element={<RubiksCubeShuffle />} />
           <Route path="/CosmicSphere" element={<CosmicSphere />} />
-          <Route path="/new" element={<CosmicSphereNew />} />
+          <Route path="/CarGame" element={<CarGame />} />
 
 
 
