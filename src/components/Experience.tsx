@@ -1,18 +1,41 @@
 // components/Experience.tsx
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, MapPin, Briefcase, ChevronDown, ChevronUp } from 'lucide-react';
+import { m, AnimatePresence } from 'framer-motion';
+import { Calendar, MapPin, Briefcase, ChevronDown, ChevronUp, Award, Code, ExternalLink, Check } from 'lucide-react';
+import { useTheme } from '@/lib/ThemeContext';
+import { Button } from '@/components/ui/button';
 
+// Updated experience data with a new entry
 const experienceData = [
+  {
+    title: "Software Development Engineer 1",
+    company: "HyScaler",
+    duration: "Apr 2025 - present",
+    location: "Bhubaneswar, Odisha, India · On-site",
+    type: "Full-time",
+    description: "Working on React Native, and developing multiple web and mobile/Web applications with focus on performance optimization and user experience.",
+    skills: ["React Native", "Swift", "TypeScript", "Redux", "UI/UX Design"],
+    logo: "https://images.unsplash.com/photo-1549923746-c502d488b3ea?q=80&w=200&auto=format&fit=crop",
+    highlights: [
+      "Led the development of 3 key mobile applications",
+      "Improved app performance by 40%",
+      "Implemented CI/CD pipeline for faster deployment"
+    ]
+  },
   {
     title: "Junior Software Developer",
     company: "HyScaler",
-    duration: "Apr 2024 - Present (1 yr 1 mo)",
+    duration: "Apr 2024 - Apr 2025",
     location: "Bhubaneswar, Odisha, India · On-site",
     type: "Full-time",
-    description: "Working on Django REST Framework, React Native, and developing multiple web and mobile applications.",
+    description: "Worked on Django REST Framework, React Native, and developing multiple web and mobile applications with a focus on API development and frontend integration.",
     skills: ["Django REST Framework", "React Native", "JavaScript", "Python", "REST API", "Git", "SQL"],
-    logo: "/api/placeholder/100/100",
+    logo: "https://images.unsplash.com/photo-1549923746-c502d488b3ea?q=80&w=200&auto=format&fit=crop",
+    highlights: [
+      "Developed and maintained RESTful APIs",
+      "Contributed to frontend development with React Native",
+      "Implemented unit testing for critical features"
+    ]
   },
   {
     title: "Apprentice Trainee",
@@ -20,33 +43,40 @@ const experienceData = [
     duration: "Aug 2023 - Mar 2024 (8 mos)",
     location: "Bhubaneswar, Odisha, India · On-site",
     type: "Trainee",
-    description: "Gaining hands-on experience in React.js, React Native, and other web technologies.",
+    description: "Gained hands-on experience in React.js, React Native, and other web technologies through intensive mentorship and practical projects.",
     skills: ["React.js", "React Native", "JavaScript", "HTML", "CSS", "Git"],
-    logo: "/api/placeholder/100/100",
+    logo: "https://images.unsplash.com/photo-1549923746-c502d488b3ea?q=80&w=200&auto=format&fit=crop",
+    highlights: [
+      "Completed training in frontend development",
+      "Participated in team coding challenges",
+      "Built portfolio projects showcasing various technologies"
+    ]
   },
 ];
 
 const Experience = () => {
-  const [expandedItem, setExpandedItem] = useState<number | null>(null);
+  const [expandedItem, setExpandedItem] = useState<number | null>(0); // First item expanded by default
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   
   const toggleExpand = (index: number) => {
     setExpandedItem(expandedItem === index ? null : index);
   };
 
-  // Variants for animations
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3
+        staggerChildren: 0.2
       }
     }
   };
 
   const titleVariants = {
-    hidden: { opacity: 0, y: -50 },
+    hidden: { opacity: 0, y: -30 },
     visible: { 
       opacity: 1, 
       y: 0,
@@ -59,7 +89,7 @@ const Experience = () => {
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 30 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
@@ -67,258 +97,289 @@ const Experience = () => {
         type: "spring",
         stiffness: 80,
         damping: 12,
-        delay: i * 0.2
+        delay: i * 0.15
       }
     })
   };
 
-  const skillsVariants = {
-    collapsed: { 
-      height: 0,
-      opacity: 0,
-      transition: { 
-        duration: 0.4, 
-        ease: "easeInOut" 
-      }
-    },
-    expanded: { 
-      height: "auto",
-      opacity: 1,
-      transition: { 
-        duration: 0.4, 
-        ease: "easeInOut",
-        staggerChildren: 0.05,
-        delayChildren: 0.1
-      }
-    }
-  };
-
   const skillItemVariants = {
-    collapsed: { 
-      opacity: 0, 
-      scale: 0.8,
-      y: 10 
-    },
-    expanded: { 
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { 
       opacity: 1, 
       scale: 1,
-      y: 0 
+      transition: {
+        type: "spring",
+        stiffness: 120,
+        damping: 10
+      }
     }
   };
 
   return (
-    <motion.section 
+    <section 
       id="experience" 
-      className="py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-white"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.1 }}
-      variants={containerVariants}
+      className={`py-24 relative ${isDark 
+        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white' 
+        : 'bg-gradient-to-br from-blue-50 via-white to-purple-50 text-gray-900'
+      }`}
     >
-      <div className="container mx-auto px-4">
-        <motion.h2 
-          className="text-4xl md:text-5xl font-bold mb-3 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
-          variants={titleVariants}
-        >
-          Experience
-        </motion.h2>
-        
-        <motion.p 
-          className="text-center text-gray-300 mb-16 max-w-2xl mx-auto"
-          variants={titleVariants}
-        >
-          My professional journey and the skills I've developed
-        </motion.p>
+      {/* Background decorations */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className={`absolute -top-20 -right-20 w-64 h-64 rounded-full ${
+          isDark ? 'bg-blue-500/5' : 'bg-blue-500/10'
+        }`}></div>
+        <div className={`absolute top-1/3 -left-32 w-96 h-96 rounded-full ${
+          isDark ? 'bg-purple-500/5' : 'bg-purple-500/10'
+        }`}></div>
+        <div className={`absolute -bottom-20 right-1/4 w-80 h-80 rounded-full ${
+          isDark ? 'bg-tech-blue/5' : 'bg-tech-blue/10'
+        }`}></div>
+      </div>
 
-        <div className="max-w-4xl mx-auto">
-          {experienceData.map((experience, index) => (
-            <motion.div 
-              key={index}
-              custom={index}
-              variants={cardVariants}
-              onHoverStart={() => setHoveredCard(index)}
-              onHoverEnd={() => setHoveredCard(null)}
-              className="mb-10"
-            >
-              <motion.div 
-                className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg"
-                whileHover={{ 
-                  y: -5, 
-                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" 
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      <div className="container mx-auto px-4 relative z-10">
+        <m.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={containerVariants}
+          className="max-w-5xl mx-auto"
+        >
+          {/* Section Header */}
+          <m.div 
+            className="text-center mb-16"
+            variants={titleVariants}
+          >
+            <div className="inline-block mb-3">
+              <span className={`inline-block px-4 py-1 rounded-full text-sm font-medium mb-3 ${
+                isDark ? 'bg-tech-blue/20 text-tech-blue' : 'bg-tech-blue/10 text-tech-blue'
+              }`}>
+                My Professional Journey
+              </span>
+            </div>
+            <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${
+              isDark ? 'text-white' : 'text-gray-900'
+            }`}>
+              Work <span className="text-tech-blue">Experience</span>
+            </h2>
+            <div className="w-24 h-1.5 bg-gradient-to-r from-tech-blue to-tech-purple mx-auto rounded-full mb-6"></div>
+            <p className={`max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              A timeline of my professional growth and the valuable skills I've developed
+            </p>
+          </m.div>
+
+          {/* Experience Timeline */}
+          <div className="relative flex flex-col space-y-8 before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:bg-gradient-to-b before:from-tech-blue before:via-tech-purple before:to-purple-500 before:rounded-full">
+            {experienceData.map((experience, index) => (
+              <m.div 
+                key={index}
+                custom={index}
+                variants={cardVariants}
+                className={`relative md:w-5/12 ${
+                  index % 2 === 0 ? 'md:ml-auto' : 'md:mr-auto'
+                } md:pl-4 ${index % 2 === 0 ? 'md:pl-0 md:pr-12' : ''}`}
               >
-                {/* Timeline indicator */}
-                <div className="flex items-center mb-6">
-                  <div className="relative">
-                    <motion.div 
-                      className="h-5 w-5 rounded-full bg-blue-500 flex items-center justify-center"
-                      animate={{ 
-                        scale: hoveredCard === index ? [1, 1.2, 1] : 1
-                      }}
-                      transition={{ 
-                        duration: 1, 
-                        repeat: hoveredCard === index ? Infinity : 0,
-                        repeatType: "reverse" 
-                      }}
-                    >
-                      <motion.div 
-                        className="h-2 w-2 rounded-full bg-white"
-                        animate={{ 
-                          scale: hoveredCard === index ? [1, 1.5, 1] : 1 
-                        }}
-                        transition={{ 
-                          duration: 1, 
-                          repeat: hoveredCard === index ? Infinity : 0,
-                          repeatType: "reverse" 
-                        }}
-                      />
-                    </motion.div>
-                    {index < experienceData.length - 1 && (
-                      <motion.div 
-                        className="h-12 w-0.5 bg-gradient-to-b from-blue-500 to-purple-500 absolute top-5 left-2.5 -translate-x-1/2"
-                        initial={{ scaleY: 0 }}
-                        animate={{ scaleY: 1 }}
-                        transition={{ duration: 0.5, delay: 0.5 }}
-                      />
-                    )}
-                  </div>
-                  <div className="ml-4">
-                    <motion.span 
-                      className="text-sm text-gray-400 font-medium"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      {experience.duration}
-                    </motion.span>
-                  </div>
+                {/* Timeline node */}
+                <div className="absolute left-0 top-5 -ml-1 h-5 w-5 rounded-full border-4 border-tech-blue bg-white md:left-1/2 md:-ml-2.5">
+                  <span className={`absolute animate-ping h-full w-full rounded-full ${
+                    hoveredCard === index ? 'bg-tech-blue/40' : 'bg-tech-blue/0'
+                  }`}></span>
+                </div>
+                
+                {/* Date badge - only visible on medium screens and up */}
+                <div className={`hidden md:block absolute top-5 ${
+                  index % 2 === 0 ? 'left-0 -translate-x-[calc(100%+3rem)]' : 'right-0 translate-x-[calc(100%+3rem)]'
+                }`}>
+                  <span className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
+                    isDark ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {experience.duration}
+                  </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
-                  {/* Logo column */}
-                  <div className="flex justify-center md:justify-start">
-                    <motion.div 
-                      className="bg-gray-700 p-3 rounded-xl h-20 w-20 flex items-center justify-center"
-                      whileHover={{ 
-                        scale: 1.05,
-                        boxShadow: "0 0 15px rgba(66, 153, 225, 0.5)" 
-                      }}
-                    >
-                      <img
-                        src={experience.logo}
-                        alt={experience.company}
-                        className="max-h-14 max-w-14 object-contain"
-                      />
-                    </motion.div>
+                {/* Card */}
+                <div 
+                  className={`group relative p-6 rounded-xl shadow-lg transition-all duration-300 ${
+                    isDark 
+                      ? 'bg-gray-800/80 backdrop-blur-sm border border-gray-700 hover:shadow-tech-blue/10' 
+                      : 'bg-white border border-gray-200 hover:shadow-tech-blue/20'
+                  }`}
+                  onMouseEnter={() => setHoveredCard(index)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  {/* Only show date on mobile */}
+                  <div className="md:hidden mb-4">
+                    <span className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
+                      isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'
+                    }`}>
+                      {experience.duration}
+                    </span>
                   </div>
 
-                  {/* Content column */}
-                  <div className="md:col-span-3">
-                    <motion.h3 
-                      className="text-2xl font-bold text-white mb-1"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      {experience.title}
-                    </motion.h3>
-                    <motion.h4 
-                      className="text-blue-400 font-medium mb-4"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      {experience.company}
-                    </motion.h4>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4 text-sm">
-                      <motion.div 
-                        className="flex items-center text-gray-300"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4 }}
-                      >
-                        <Calendar className="w-4 h-4 mr-2 text-blue-400" />
-                        <span>{experience.duration}</span>
-                      </motion.div>
-                      <motion.div 
-                        className="flex items-center text-gray-300"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
-                      >
-                        <MapPin className="w-4 h-4 mr-2 text-blue-400" />
-                        <span>{experience.location.split('·')[0]}</span>
-                      </motion.div>
-                      <motion.div 
-                        className="flex items-center text-gray-300"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 }}
-                      >
-                        <Briefcase className="w-4 h-4 mr-2 text-blue-400" />
-                        <span>{experience.type}</span>
-                      </motion.div>
+                  {/* Company logo and job type */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center">
+                      <div className={`w-12 h-12 rounded-lg overflow-hidden mr-4 ${
+                        isDark ? 'border border-gray-700' : 'border border-gray-200'
+                      }`}>
+                        <img 
+                          src={experience.logo} 
+                          alt={experience.company} 
+                          className="w-full h-full object-cover" 
+                        />
+                      </div>
+                      <div>
+                        <h4 className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                          {experience.company}
+                        </h4>
+                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                          {experience.type}
+                        </p>
+                      </div>
                     </div>
+                    <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      index === 0 
+                        ? isDark ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-700'
+                        : isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'
+                    }`}>
+                      {index === 0 ? 'Current' : 'Completed'}
+                    </div>
+                  </div>
 
-                    <motion.p 
-                      className="mb-4 text-gray-300"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.7 }}
-                    >
-                      {experience.description}
-                    </motion.p>
+                  {/* Job title and details */}
+                  <h3 className={`text-xl font-bold mb-3 group-hover:text-tech-blue transition-colors ${
+                    isDark ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    {experience.title}
+                  </h3>
 
-                    <AnimatePresence>
-                      <motion.div
-                        initial="collapsed"
-                        animate={expandedItem === index ? "expanded" : "collapsed"}
-                        variants={skillsVariants}
-                        className="overflow-hidden"
+                  <p className={`mb-5 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    {experience.description}
+                  </p>
+
+                  {/* Location */}
+                  <div className={`flex items-center mb-5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <MapPin className="w-4 h-4 mr-2 text-tech-blue" />
+                    <span className="text-sm">{experience.location}</span>
+                  </div>
+
+                  {/* Highlights */}
+                  <div className={`p-4 rounded-lg mb-5 ${
+                    isDark ? 'bg-gray-700/50' : 'bg-gray-50'
+                  }`}>
+                    <h5 className={`font-semibold mb-3 flex items-center ${
+                      isDark ? 'text-gray-200' : 'text-gray-700'
+                    }`}>
+                      <Award className="w-4 h-4 mr-2 text-tech-blue" />
+                      Key Achievements
+                    </h5>
+                    <ul className="space-y-2">
+                      {experience.highlights.map((highlight, idx) => (
+                        <li key={idx} className={`flex items-start text-sm ${
+                          isDark ? 'text-gray-300' : 'text-gray-600'
+                        }`}>
+                          <Check className={`w-4 h-4 mr-2 mt-0.5 ${
+                            isDark ? 'text-tech-purple' : 'text-tech-blue'
+                          }`} />
+                          {highlight}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Skills */}
+                  <AnimatePresence>
+                    {(expandedItem === index || expandedItem === null) && (
+                      <m.div
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        variants={skillItemVariants}
                       >
-                        <h5 className="text-sm font-semibold text-gray-300 mb-3">Technologies & Skills</h5>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2 mb-4">
                           {experience.skills.map((skill, skillIndex) => (
-                            <motion.span 
-                              key={skillIndex} 
+                            <m.span 
+                              key={skillIndex}
                               variants={skillItemVariants}
-                              className="px-3 py-1 bg-gradient-to-r from-blue-900 to-purple-900 text-blue-100 text-sm font-medium rounded-full"
+                              className={`px-3 py-1 text-sm font-medium rounded-full ${
+                                isDark 
+                                  ? 'bg-gradient-to-r from-tech-blue/80 to-tech-purple/80 text-white' 
+                                  : 'bg-gradient-to-r from-tech-blue to-tech-purple text-white'
+                              }`}
+                              whileHover={{ 
+                                scale: 1.05,
+                                boxShadow: '0 0 8px rgba(37, 99, 235, 0.5)'
+                              }}
                             >
                               {skill}
-                            </motion.span>
+                            </m.span>
                           ))}
                         </div>
-                      </motion.div>
-                    </AnimatePresence>
+                      </m.div>
+                    )}
+                  </AnimatePresence>
 
-                    <motion.button
+                  {/* Button row */}
+                  <div className="flex justify-between items-center mt-6">
+                    <Button 
                       onClick={() => toggleExpand(index)}
-                      className="mt-4 flex items-center text-blue-400 hover:text-blue-300 text-sm font-medium"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      variant="ghost"
+                      size="sm"
+                      className={`font-medium ${
+                        isDark 
+                          ? 'text-tech-blue hover:text-tech-purple hover:bg-gray-700/50' 
+                          : 'text-tech-blue hover:text-tech-purple hover:bg-gray-100/80'
+                      }`}
                     >
                       {expandedItem === index ? (
                         <>
+                          <ChevronUp className="w-4 h-4 mr-1" />
                           <span>Hide Skills</span>
-                          <ChevronUp className="w-4 h-4 ml-1" />
                         </>
                       ) : (
                         <>
-                          <span>Show Skills</span>
-                          <ChevronDown className="w-4 h-4 ml-1" />
+                          <ChevronDown className="w-4 h-4 mr-1" />
+                          <span>View Skills</span>
                         </>
                       )}
-                    </motion.button>
+                    </Button>
+                    
+                    {index === 0 && (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className={isDark 
+                          ? 'bg-gray-700/50 text-white border-gray-600 hover:bg-gray-600' 
+                          : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                        }
+                      >
+                        <span>Certificate</span>
+                        <ExternalLink className="w-3.5 h-3.5 ml-1.5" />
+                      </Button>
+                    )}
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
-          ))}
-        </div>
+              </m.div>
+            ))}
+          </div>
+
+          {/* Resume Button */}
+          <m.div 
+            className="text-center mt-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+          >
+            <Button 
+              className="bg-gradient-to-r from-tech-blue to-tech-purple hover:from-tech-purple hover:to-tech-blue text-white font-medium px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-tech-blue/30"
+            >
+              <span>Download Full Resume</span>
+              <ExternalLink className="w-4 h-4 ml-2" />
+            </Button>
+          </m.div>
+        </m.div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 
