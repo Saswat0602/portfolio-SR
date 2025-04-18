@@ -55,13 +55,25 @@ const experienceData = [
 ];
 
 const Experience = () => {
-  const [expandedItem, setExpandedItem] = useState<number | null>(0); // First item expanded by default
+  const [expandedItems, setExpandedItems] = useState<number[]>([0]); // First item expanded by default
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   
   const toggleExpand = (index: number) => {
-    setExpandedItem(expandedItem === index ? null : index);
+    setExpandedItems(prev => {
+      // If item is already expanded, remove it from the list
+      if (prev.includes(index)) {
+        return prev.filter(i => i !== index);
+      } 
+      // Otherwise add it to the list
+      return [...prev, index];
+    });
+  };
+
+  // Check if an item is expanded
+  const isExpanded = (index: number) => {
+    return expandedItems.includes(index);
   };
 
   // Animation variants
@@ -103,6 +115,25 @@ const Experience = () => {
   };
 
   const skillItemVariants = {
+    hidden: { 
+      opacity: 0, 
+      height: 0,
+      marginBottom: 0,
+      overflow: 'hidden'
+    },
+    visible: { 
+      opacity: 1, 
+      height: 'auto',
+      marginBottom: 16,
+      transition: {
+        duration: 0.3,
+        when: "beforeChildren",
+        staggerChildren: 0.05
+      }
+    }
+  };
+
+  const skillBadgeVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: { 
       opacity: 1, 
@@ -287,19 +318,21 @@ const Experience = () => {
                   </div>
 
                   {/* Skills */}
-                  <AnimatePresence>
-                    {(expandedItem === index || expandedItem === null) && (
+                  <AnimatePresence initial={false}>
+                    {isExpanded(index) && (
                       <m.div
+                        key={`skills-${index}`}
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
                         variants={skillItemVariants}
+                        className="overflow-hidden"
                       >
-                        <div className="flex flex-wrap gap-2 mb-4">
+                        <div className="flex flex-wrap gap-2">
                           {experience.skills.map((skill, skillIndex) => (
                             <m.span 
                               key={skillIndex}
-                              variants={skillItemVariants}
+                              variants={skillBadgeVariants}
                               className={`px-3 py-1 text-sm font-medium rounded-full ${
                                 isDark 
                                   ? 'bg-gradient-to-r from-tech-blue/80 to-tech-purple/80 text-white' 
@@ -330,16 +363,16 @@ const Experience = () => {
                           : 'text-tech-blue hover:text-tech-purple hover:bg-gray-100/80'
                       }`}
                     >
-                      {expandedItem === index ? (
-                        <>
+                      {isExpanded(index) ? (
+                        <div className="flex items-center">
                           <ChevronUp className="w-4 h-4 mr-1" />
                           <span>Hide Skills</span>
-                        </>
+                        </div>
                       ) : (
-                        <>
+                        <div className="flex items-center">
                           <ChevronDown className="w-4 h-4 mr-1" />
                           <span>View Skills</span>
-                        </>
+                        </div>
                       )}
                     </Button>
                     

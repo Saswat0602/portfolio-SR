@@ -155,7 +155,7 @@ const Contact = () => {
                       name="name"
                       value={formState.name}
                       onChange={handleChange}
-                      placeholder="John Doe"
+                      placeholder="Name"
                       required
                       className={`w-full ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'}`}
                     />
@@ -170,7 +170,7 @@ const Contact = () => {
                       type="email"
                       value={formState.email}
                       onChange={handleChange}
-                      placeholder="john@example.com"
+                      placeholder="....@example.com"
                       required
                       className={`w-full ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'}`}
                     />

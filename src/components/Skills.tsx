@@ -16,31 +16,16 @@ import {
 import { TbBrandReactNative } from "react-icons/tb";
 import { RiRestTimeLine } from "react-icons/ri";
 
-// Define skill categories with improved organization
+// Define skill categories
 const categories = [
-  {
-    name: "all",
-    label: "All Skills"
-  },
-  {
-    name: "frontend",
-    label: "Frontend"
-  },
-  {
-    name: "backend",
-    label: "Backend"
-  },
-  {
-    name: "mobile",
-    label: "Mobile"
-  },
-  {
-    name: "other",
-    label: "Tools & DevOps"
-  }
+  { name: "all", label: "All Skills" },
+  { name: "frontend", label: "Frontend" },
+  { name: "backend", label: "Backend" },
+  { name: "mobile", label: "Mobile" },
+  { name: "other", label: "Tools & DevOps" }
 ];
 
-// Simplified categorized skills with icon mappings only
+// Categorized skills
 const categorizedSkills = {
   frontend: [
     { name: "HTML", icon: FaHtml5, color: "#E34F26" },
@@ -95,7 +80,7 @@ const Skills = () => {
 
   const filteredSkills = getFilteredSkills();
   
-  // Animation variants for container
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -106,16 +91,15 @@ const Skills = () => {
     }
   };
   
-  // Animation variants for skill cards
-  const cardVariants = {
-    hidden: { y: 20, opacity: 0 },
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
     visible: { 
-      y: 0, 
       opacity: 1,
+      y: 0,
       transition: {
         type: "spring",
         stiffness: 100,
-        damping: 10
+        damping: 12
       }
     }
   };
@@ -125,155 +109,116 @@ const Skills = () => {
       id="skills" 
       className={`py-24 relative ${isDark 
         ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white' 
-        : 'bg-gradient-to-br from-blue-50 via-white to-purple-50 text-gray-900'
+        : 'bg-gray-50 text-gray-900'
       }`}
     >
-      {/* Background decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute -top-20 -right-20 w-64 h-64 rounded-full ${
-          isDark ? 'bg-blue-500/5' : 'bg-blue-500/10'
-        }`}></div>
-        <div className={`absolute top-1/3 -left-32 w-96 h-96 rounded-full ${
-          isDark ? 'bg-purple-500/5' : 'bg-purple-500/10'
-        }`}></div>
-        <div className={`absolute -bottom-20 right-1/4 w-80 h-80 rounded-full ${
-          isDark ? 'bg-tech-blue/5' : 'bg-tech-blue/10'
-        }`}></div>
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        <m.div 
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ 
-            duration: 0.5,
-            type: "spring",
-            stiffness: 100
-          }}
-          className="mb-16 text-center max-w-3xl mx-auto"
-        >
-          <div className="inline-block mb-3">
-            <span className={`inline-block px-4 py-1 rounded-full text-sm font-medium mb-3 ${
-              isDark ? 'bg-tech-blue/20 text-tech-blue' : 'bg-tech-blue/10 text-tech-blue'
-            }`}>
-              Technical Arsenal
-            </span>
-          </div>
-          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${
-            isDark ? 'text-white' : 'text-gray-900'
-          }`}>
-            My <span className="text-tech-blue">Skills</span>
+      <div className="container mx-auto px-4">
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            Technical Skills
           </h2>
-          <div className="w-24 h-1.5 bg-gradient-to-r from-tech-blue to-tech-purple mx-auto rounded-full mb-6"></div>
-          <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'} mb-10`}>
-            Technologies I've mastered to create exceptional digital experiences
+          <div className="w-16 h-1 bg-tech-blue mx-auto mb-6"></div>
+          <p className={`max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            Technologies I use to create exceptional digital experiences
           </p>
-          
-          {/* Category Filters */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
+        </div>
+        
+        {/* Category Filters - Tab Style */}
+        <div className="flex justify-center mb-12">
+          <div className={`inline-flex p-1 rounded-full shadow-sm ${isDark ? 'bg-gray-800' : 'bg-white border border-gray-200'}`}>
             {categories.map((category) => (
-              <Button 
+              <button
                 key={category.name}
-                onClick={() => setActiveCategory(category.name)}
-                variant={activeCategory === category.name ? 'default' : 'outline'}
-                className={`rounded-full px-6 ${
-                  activeCategory === category.name 
-                    ? 'bg-gradient-to-r from-tech-blue to-tech-purple text-white shadow-md' 
-                    : isDark ? 'border-gray-700 text-gray-300 hover:bg-gray-800' : ''
+                className={`px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-200 ${
+                  activeCategory === category.name
+                    ? isDark 
+                      ? 'bg-gray-700 text-tech-blue shadow-sm' 
+                      : 'bg-gray-100 text-tech-blue shadow-sm'
+                    : isDark 
+                      ? 'text-gray-300 hover:text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
                 }`}
+                onClick={() => setActiveCategory(category.name)}
               >
                 {category.label}
-              </Button>
+              </button>
             ))}
           </div>
-        </m.div>
+        </div>
         
-        {/* Skills Grid - Simplified Clean Design */}
-        <m.div 
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <AnimatePresence mode="wait">
-            {filteredSkills.map((skill) => (
-              <m.div
-                key={skill.name}
-                layout
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                exit={{ 
-                  scale: 0.8, 
-                  opacity: 0,
-                  transition: { duration: 0.2 }
-                }}
-                whileHover={{ 
-                  y: -8,
-                  transition: { duration: 0.2 },
-                  boxShadow: `0 10px 25px -5px ${skill.color}30`
-                }}
-                className={`flex flex-col items-center justify-center p-5 rounded-lg transition-all duration-300 ${
-                  isDark 
-                    ? 'bg-gray-800/60 backdrop-blur-sm hover:bg-gray-800/80 border border-gray-700' 
-                    : 'bg-white hover:bg-gray-50 border border-gray-200 hover:border-tech-blue/20'
-                }`}
-              >
-                {/* Skill Icon */}
-                <div 
-                  className={`w-14 h-14 rounded-lg flex items-center justify-center mb-3 ${
-                    isDark ? 'bg-gray-700/50' : 'bg-gray-100'
-                  }`}
-                  style={{ 
-                    boxShadow: `0 0 15px ${skill.color}20`
+        {/* Skills Cards */}
+        <AnimatePresence mode="wait">
+          <m.div
+            key={activeCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-5xl mx-auto"
+          >
+            <m.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
+            >
+              {filteredSkills.map((skill) => (
+                <m.div
+                  key={skill.name}
+                  variants={itemVariants}
+                  whileHover={{ 
+                    scale: 1.05,
+                    boxShadow: `0 4px 20px ${skill.color}20`,
+                    transition: { duration: 0.2 } 
                   }}
+                  className={`flex flex-col items-center justify-center p-5 rounded-lg ${
+                    isDark 
+                      ? 'bg-gray-800 border border-gray-700' 
+                      : 'bg-white border border-gray-200 shadow-sm'
+                  } transition-all duration-200`}
                 >
-                  <skill.icon style={{ color: skill.color }} size={30} />
-                </div>
-                
-                {/* Skill Name */}
-                <h3 className={`text-center font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
-                  {skill.name}
-                </h3>
-              </m.div>
-            ))}
-          </AnimatePresence>
-        </m.div>
+                  <div className="mb-3">
+                    <skill.icon 
+                      style={{ color: skill.color }} 
+                      size={36} 
+                      className="transition-transform duration-300"
+                    />
+                  </div>
+                  <span className={`text-base font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
+                    {skill.name}
+                  </span>
+                </m.div>
+              ))}
+            </m.div>
+          </m.div>
+        </AnimatePresence>
         
-        {/* Current Learning Section - Simplified */}
-        <m.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className={`mt-16 p-6 rounded-xl text-center ${
-            isDark 
-              ? 'bg-gray-800/50 border border-gray-700' 
-              : 'bg-white/70 border border-gray-200 shadow-sm'
+        {/* Currently Learning */}
+        <div 
+          className={`mt-16 p-6 rounded-lg max-w-3xl mx-auto text-center ${
+            isDark ? 'bg-gray-800/50 border border-gray-700' : 'bg-white border border-gray-200 shadow-sm'
           }`}
         >
-          <h3 className="text-2xl font-semibold mb-4">
-            <span className="text-tech-blue">Continuous</span> Learning
+          <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            Currently Learning
           </h3>
-          
-          {/* Current Learning Goals */}
-          <div className="flex flex-wrap justify-center gap-3 mt-4">
-            {['Advanced TypeScript', 'AWS Solutions', 'GraphQL', 'Next.js 14'].map((goal) => (
+          <div className="flex flex-wrap justify-center gap-3">
+            {['Advanced TypeScript', 'AWS Solutions', 'GraphQL', 'Next.js 14'].map(skill => (
               <span 
-                key={goal}
-                className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                key={skill} 
+                className={`px-4 py-2 text-sm rounded-lg ${
                   isDark 
-                    ? 'bg-gradient-to-r from-tech-blue/30 to-tech-purple/30 text-white' 
-                    : 'bg-gradient-to-r from-tech-blue/10 to-tech-purple/10 text-gray-800'
+                    ? 'bg-tech-blue/10 text-tech-blue border border-tech-blue/30' 
+                    : 'bg-tech-blue/10 text-tech-blue border border-tech-blue/20'
                 }`}
               >
-                {goal}
+                {skill}
               </span>
             ))}
           </div>
-        </m.div>
+        </div>
       </div>
     </section>
   );

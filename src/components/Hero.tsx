@@ -53,9 +53,6 @@ const Hero = () => {
             </h2>
           </div>
 
-          <p className={`${isDark ? 'text-white/80' : 'text-gray-700'} text-lg max-w-2xl mb-8 split-text`}>
-            I am a dedicated SDE 1 at HyScaler, where I develop modern applications using React, React Native, and Node.js. Passionate about technology and innovation, I strive to create impactful solutions that deliver exceptional user experiences.
-          </p>
 
           <div ref={buttonsRef} className="flex flex-wrap gap-4 mb-12">
             <m.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
