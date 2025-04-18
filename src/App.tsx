@@ -9,7 +9,6 @@ import SplashCursor from "./reactbits/SplashCursor";
 import Playground from "./components/Playground";
 import RubiksCubeScene from "./components/RubiksCube";
 import FullScreenGlobe from "./components/GlobeComponent";
-import DinoGame from "./components/DinoGame";
 import SnakeGame from "./components/SnakeGame";
 import GalaxyScene from "./components/GalaxyScene";
 import Cube2 from "./components/cube2";
@@ -31,7 +30,7 @@ const App = () => (
 
           {/* GAMES */}
           <Route path="/cube" element={<RubiksCubeScene />} />
-          <Route path="/dino" element={<SnakeGame />} />
+          <Route path="/snake" element={<SnakeGame />} />
           <Route path="/gala" element={<GalaxyScene />} />
           <Route path="/Cube2" element={<Cube2 />} />
           <Route path="/Cube3" element={<RubiksCubeShuffle />} />
