@@ -9,7 +9,8 @@ import LoadingScreen from "./components/LoadingScreen";
 import { routes } from "./lib/config";
 import { ThemeProvider } from "./lib/ThemeContext";
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
-import Footer from '@/components/Footer';
+import GooeyNav from './reactbits/GooeyNav';
+// import Footer from '@/components/Footer';
 
 // Define a priority loading mechanism for critical components
 const withPriorityLoading = (importFn: () => Promise<any>) => {
@@ -43,6 +44,15 @@ const queryClient = new QueryClient({
     },
   },
 });
+const navLinks = [
+  { href: "/#home", label: "Home"},
+  { href: "/#about", label: "About" },
+  { href: "/#experience", label: "Experience"},
+  { href: "/#skills", label: "Skills"},
+  { href: "/#projects", label: "Projects" },
+  { href: "/#contact", label: "Contact" },
+  { href: "/playground", label: "Playground" }
+];
 
 // Improved loading fallback with subtle animation
 const LoadingFallback = () => (
@@ -58,7 +68,18 @@ const LoadingFallback = () => (
 const MainLayout = ({ children }: { children: React.ReactNode }) => (
   <>
     <Navbar />
-    <Suspense fallback={<LoadingFallback />}>
+
+      <GooeyNav
+        items={navLinks}
+        animationTime={600}
+        pCount={15}
+        minDistance={20}
+        maxDistance={42}
+        maxRotate={75}
+        colors={[1, 2, 3, 1, 2, 3, 1, 4]}
+        timeVariance={300}
+      />
+      <Suspense fallback={<LoadingFallback />}>
       {children}
     </Suspense>
   </>
@@ -82,7 +103,7 @@ const App = () => {
       try {
         // Start loading the main page in the background
         const indexPagePromise = import("./pages/Index");
-        
+
         // Preload critical assets (fonts, hero images, etc)
         const criticalImagePromises = [
           // Add critical images here if needed
@@ -92,7 +113,7 @@ const App = () => {
           //   img.onload = resolve;
           // })
         ];
-        
+
         // Only wait for index page in development
         // In production, show the loader for minimum time for UX reasons
         if (import.meta.env.DEV) {
@@ -110,7 +131,7 @@ const App = () => {
         console.error("Error preloading resources:", error);
       }
     };
-    
+
     preloadResources().then(() => {
       // When resources are loaded, set loading to false
       setIsLoading(false);
@@ -120,11 +141,11 @@ const App = () => {
   useEffect(() => {
     // Set up smooth scrolling for the whole application
     document.documentElement.style.scrollBehavior = 'smooth';
-    
+
     // Add a class for transitioning theme colors globally
     document.documentElement.classList.add('transition-colors');
     document.documentElement.classList.add('duration-500');
-    
+
     // Simulate loading resources
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -140,17 +161,17 @@ const App = () => {
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchor = target.closest('a[href^="#"]');
-      
+
       if (anchor) {
         e.preventDefault();
         const targetId = anchor.getAttribute('href')?.substring(1);
-        
+
         if (targetId) {
           const targetElement = document.getElementById(targetId);
           if (targetElement) {
             // Scroll to the element with smooth behavior
             targetElement.scrollIntoView({ behavior: 'smooth' });
-            
+
             // Update URL without refreshing page
             window.history.pushState(null, '', `#${targetId}`);
           }
@@ -159,7 +180,7 @@ const App = () => {
     };
 
     document.addEventListener('click', handleAnchorClick);
-    
+
     return () => {
       document.removeEventListener('click', handleAnchorClick);
     };
@@ -187,56 +208,54 @@ const App = () => {
                     <Sonner />
                     <BrowserRouter>
                       <Routes>
-                        {/* Main Routes with Navbar */}
-                        <Route 
-                          path={routes.home} 
-                          element={<MainLayout><Index /></MainLayout>} 
+                        <Route
+                          path={routes.home}
+                          element={<MainLayout><Index /></MainLayout>}
                         />
-                        <Route 
-                          path={routes.playground} 
-                          element={<MainLayout><Playground /></MainLayout>} 
+                        <Route
+                          path={routes.playground}
+                          element={<MainLayout><Playground /></MainLayout>}
                         />
 
-                        {/* 3D Worlds - Full Screen Experiences */}
-                        <Route 
-                          path={routes.worlds.globe} 
-                          element={<PlaygroundLayout><FullScreenGlobe /></PlaygroundLayout>} 
+                        <Route
+                          path={routes.worlds.globe}
+                          element={<PlaygroundLayout><FullScreenGlobe /></PlaygroundLayout>}
                         />
-                        <Route 
-                          path={routes.worlds.galaxy} 
-                          element={<PlaygroundLayout><GalaxyScene /></PlaygroundLayout>} 
+                        <Route
+                          path={routes.worlds.galaxy}
+                          element={<PlaygroundLayout><GalaxyScene /></PlaygroundLayout>}
                         />
-                        <Route 
-                          path={routes.worlds.cosmicSphere} 
-                          element={<PlaygroundLayout><CosmicSphere /></PlaygroundLayout>} 
+                        <Route
+                          path={routes.worlds.cosmicSphere}
+                          element={<PlaygroundLayout><CosmicSphere /></PlaygroundLayout>}
                         />
-                        <Route 
-                          path={routes.worlds.cube2} 
-                          element={<PlaygroundLayout><Cube2 /></PlaygroundLayout>} 
+                        <Route
+                          path={routes.worlds.cube2}
+                          element={<PlaygroundLayout><Cube2 /></PlaygroundLayout>}
                         />
-                        <Route 
-                          path={routes.worlds.cube3} 
-                          element={<PlaygroundLayout><RubiksCubeShuffle /></PlaygroundLayout>} 
+                        <Route
+                          path={routes.worlds.cube3}
+                          element={<PlaygroundLayout><RubiksCubeShuffle /></PlaygroundLayout>}
                         />
 
                         {/* Games */}
-                        <Route 
-                          path={routes.games.rubiksCube} 
-                          element={<PlaygroundLayout><RubiksCubeScene /></PlaygroundLayout>} 
+                        <Route
+                          path={routes.games.rubiksCube}
+                          element={<PlaygroundLayout><RubiksCubeScene /></PlaygroundLayout>}
                         />
-                        <Route 
-                          path={routes.games.snake} 
-                          element={<PlaygroundLayout><SnakeGame /></PlaygroundLayout>} 
+                        <Route
+                          path={routes.games.snake}
+                          element={<PlaygroundLayout><SnakeGame /></PlaygroundLayout>}
                         />
-                        <Route 
-                          path={routes.games.carGame} 
-                          element={<PlaygroundLayout><CarGame /></PlaygroundLayout>} 
+                        <Route
+                          path={routes.games.carGame}
+                          element={<PlaygroundLayout><CarGame /></PlaygroundLayout>}
                         />
 
                         {/* 404 Not Found */}
-                        <Route 
-                          path="*" 
-                          element={<MainLayout><NotFound /></MainLayout>} 
+                        <Route
+                          path="*"
+                          element={<MainLayout><NotFound /></MainLayout>}
                         />
                       </Routes>
                     </BrowserRouter>

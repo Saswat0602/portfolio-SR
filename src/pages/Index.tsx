@@ -134,7 +134,7 @@ const Index = () => {
   const bgClass = isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900';
 
   return (
-    <div ref={mainRef} className={`min-h-screen ${bgClass} hardware-accelerated`}>
+    <div ref={mainRef} className={`min-h-screen ${bgClass} hardware-accelerated z-10`}>
       <div id="home">
         <Hero />
       </div>
