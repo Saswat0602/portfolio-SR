@@ -9,7 +9,6 @@ import LoadingScreen from "./components/LoadingScreen";
 import { routes } from "./lib/config";
 import { ThemeProvider } from "./lib/ThemeContext";
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
-import GooeyNav from './reactbits/GooeyNav';
 // import Footer from '@/components/Footer';
 
 // Define a priority loading mechanism for critical components
@@ -68,17 +67,6 @@ const LoadingFallback = () => (
 const MainLayout = ({ children }: { children: React.ReactNode }) => (
   <>
     <Navbar />
-
-      <GooeyNav
-        items={navLinks}
-        animationTime={600}
-        pCount={15}
-        minDistance={20}
-        maxDistance={42}
-        maxRotate={75}
-        colors={[1, 2, 3, 1, 2, 3, 1, 4]}
-        timeVariance={300}
-      />
       <Suspense fallback={<LoadingFallback />}>
       {children}
     </Suspense>
@@ -104,26 +92,12 @@ const App = () => {
         // Start loading the main page in the background
         const indexPagePromise = import("./pages/Index");
 
-        // Preload critical assets (fonts, hero images, etc)
-        const criticalImagePromises = [
-          // Add critical images here if needed
-          // new Promise(resolve => {
-          //   const img = new Image();
-          //   img.src = "/path/to/critical/image.jpg";
-          //   img.onload = resolve;
-          // })
-        ];
 
-        // Only wait for index page in development
-        // In production, show the loader for minimum time for UX reasons
+
         if (import.meta.env.DEV) {
           await indexPagePromise;
-          await Promise.all(criticalImagePromises);
         } else {
-          // In production, show loader for a short time for visual consistency
-          // but also reduce the minimum time from 1000ms to 600ms for faster loading
           await Promise.race([
-            Promise.all([indexPagePromise, ...criticalImagePromises]),
             new Promise(resolve => setTimeout(resolve, 600)),
           ]);
         }
