@@ -5,6 +5,7 @@ import { Mail, MapPin, User, ArrowRight, Download, FileText, Coffee, Code, Globe
 import { useTheme } from '@/lib/ThemeContext';
 import { Button } from '@/components/ui/button';
 import data from '@/data/data.json';
+import SpotlightCard from '@/reactbits/SpotlightCard';
 
 const About = () => {
   const { theme } = useTheme();
@@ -66,13 +67,15 @@ const About = () => {
           
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Profile section */}
+
           <m.div variants={itemVariants} className="lg:col-span-1">
+          <SpotlightCard className="custom-spotlight-card" spotlightColor="rgba(0, 229, 255, 0.2)">
             <div className={cardClasses}>
               <div className="flex flex-col items-center">
-                <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-tech-blue shadow-lg mb-6">
+                <div className="w-56 h-56 rounded-full overflow-hidden border-4 border-tech-blue shadow-lg mb-6">
                   <img 
-                    src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=1000&auto=format&fit=crop"
-                    alt="Profile" 
+                      src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1000&auto=format&fit=crop"
+                      alt="Profile" 
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -108,10 +111,12 @@ const About = () => {
                 </Button>
               </div>
             </div>
+          </SpotlightCard>
           </m.div>
-          
           {/* Info section */}
           <m.div variants={itemVariants} className="lg:col-span-2">
+          <SpotlightCard className="custom-spotlight-card" spotlightColor="rgba(0, 229, 255, 0.2)">
+
             <div className={cardClasses}>
               <h3 className={`text-2xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 Bio
@@ -175,6 +180,7 @@ const About = () => {
                 </Button>
               </div>
             </div>
+            </SpotlightCard>
           </m.div>
         </div>
       </div>
