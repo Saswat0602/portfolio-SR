@@ -1,46 +1,56 @@
+import React from 'react';
+import { Button } from '@/components/ui/button';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Leva, useControls } from 'leva';
-import React from 'react';
-import RubiksCube from './RubiksCube'; // Your cube logic component
+import RubiksCube from '@/components/RubiksCube';
 
-const RubiksCubePage = () => {
-  const {
-    leftCW, leftCCW,
-    rightCW, rightCCW,
-    frontCW, frontCCW,
-    backCW, backCCW,
-    topCW, topCCW,
-    bottomCW, bottomCCW,
-  } = useControls('Cube', {
-    'Left CW': button(() => rotateSlice('left', 'cw')),
-    'Left CCW': button(() => rotateSlice('left', 'ccw')),
-    'Right CW': button(() => rotateSlice('right', 'cw')),
-    'Right CCW': button(() => rotateSlice('right', 'ccw')),
-    'Front CW': button(() => rotateSlice('front', 'cw')),
-    'Front CCW': button(() => rotateSlice('front', 'ccw')),
-    'Back CW': button(() => rotateSlice('back', 'cw')),
-    'Back CCW': button(() => rotateSlice('back', 'ccw')),
-    'Top CW': button(() => rotateSlice('top', 'cw')),
-    'Top CCW': button(() => rotateSlice('top', 'ccw')),
-    'Bottom CW': button(() => rotateSlice('bottom', 'cw')),
-    'Bottom CCW': button(() => rotateSlice('bottom', 'ccw')),
-  });
+interface CubeControls {
+  [key: string]: () => void;
+}
 
-  function rotateSlice(face: string, direction: 'cw' | 'ccw') {
-    // Hook up to your actual cube logic here
-    console.log(`Rotate ${face.toUpperCase()} ${direction.toUpperCase()}`);
-  }
+const RubiksCubePage: React.FC = () => {
+  const [isAnimating, setIsAnimating] = React.useState(false);
+
+  const rotateSlice = (face: string, direction: 'cw' | 'ccw') => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    // Add your rotation logic here
+    setTimeout(() => setIsAnimating(false), 500);
+  };
+
+  const controls: CubeControls = {
+    'Left CW': () => rotateSlice('left', 'cw'),
+    'Left CCW': () => rotateSlice('left', 'ccw'),
+    'Right CW': () => rotateSlice('right', 'cw'),
+    'Right CCW': () => rotateSlice('right', 'ccw'),
+    'Front CW': () => rotateSlice('front', 'cw'),
+    'Front CCW': () => rotateSlice('front', 'ccw'),
+    'Back CW': () => rotateSlice('back', 'cw'),
+    'Back CCW': () => rotateSlice('back', 'ccw'),
+    'Top CW': () => rotateSlice('top', 'cw'),
+    'Top CCW': () => rotateSlice('top', 'ccw'),
+    'Bottom CW': () => rotateSlice('bottom', 'cw'),
+    'Bottom CCW': () => rotateSlice('bottom', 'ccw')
+  };
 
   return (
-    <div className="rubiks-cube-wrapper">
-      <Canvas camera={{ position: [0, 0, 7], fov: 50 }}>
-        <ambientLight intensity={0.4} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+      <div className="w-full max-w-4xl p-4">
         <RubiksCube />
-        <OrbitControls />
-      </Canvas>
-      <Leva collapsed />
+        <div className="grid grid-cols-2 gap-2 mt-4">
+          {Object.entries(controls).map(([label, action]) => (
+            <Button
+              key={label}
+              onClick={action}
+              disabled={isAnimating}
+              className="w-full"
+            >
+              {label}
+            </Button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

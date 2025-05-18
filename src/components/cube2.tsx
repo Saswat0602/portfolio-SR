@@ -3,6 +3,7 @@ import { Stats, OrbitControls } from '@react-three/drei'
 import { Suspense, useMemo, useRef, useState, useEffect } from 'react'
 import JEASINGS, { JEasing } from 'jeasings'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
+import * as THREE from 'three'
 
 // Track the current state of the cube
 const SOLVED_STATE = {
@@ -24,7 +25,7 @@ function formatTime(ms) {
 }
 
 // Modern UI components
-function Button({ onClick, children, primary, disabled, className = "" }) {
+function Button({ primary, onClick, disabled, children, className = "" }) {
   const baseClasses = "px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-opacity-50";
   const primaryClasses = primary 
     ? "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500" 
@@ -83,14 +84,15 @@ function ControlPanel({ onShuffle, onSolve, onReset, solving, setSolving, moveIn
       <div className="flex flex-col gap-3 sm:gap-4">
         <div className="flex flex-wrap gap-2 sm:gap-3">
           <Button 
+            primary={true}
             onClick={onShuffle} 
-            primary 
             disabled={solving && moveInProgress}
             className="flex-1 text-sm sm:text-base"
           >
             Shuffle
           </Button>
           <Button 
+            primary={true}
             onClick={() => setSolving(!solving)} 
             disabled={moveInProgress}
             className="flex-1 text-sm sm:text-base"
@@ -101,6 +103,7 @@ function ControlPanel({ onShuffle, onSolve, onReset, solving, setSolving, moveIn
         
         <div className="flex flex-wrap gap-2 sm:gap-3">
           <Button 
+            primary={true}
             onClick={onReset} 
             disabled={moveInProgress}
             className="flex-1 text-sm sm:text-base"
@@ -108,8 +111,8 @@ function ControlPanel({ onShuffle, onSolve, onReset, solving, setSolving, moveIn
             Reset Cube
           </Button>
           <Button 
+            primary={true}
             onClick={onSolve} 
-            primary 
             disabled={solving && moveInProgress}
             className="flex-1 text-sm sm:text-base"
           >
@@ -514,10 +517,10 @@ export default function RubiksCube() {
   const lastTime = useRef(null);
   
   // Function references for cube operations
-  const onMove = useRef();
-  const onShuffle = useRef();
-  const onReset = useRef();
-  const onSolve = useRef();
+  const onMove = useRef<((move: string) => void) | null>(null);
+  const onShuffle = useRef<((count: number) => void) | null>(null);
+  const onReset = useRef<(() => void) | null>(null);
+  const onSolve = useRef<(() => void) | null>(null);
   
   // Timer logic
   useEffect(() => {
@@ -739,18 +742,18 @@ export default function RubiksCube() {
             setMoveInProgress={setMoveInProgress}
             setIsCubeSolved={setIsCubeSolved}
           />
-          <OrbitControls 
-            target={[0, 0, 0]} 
+          <OrbitControls
+            target={[0, 0, 0]}
             enablePan={false}
             enableDamping={true}
             dampingFactor={0.05}
-            rotateSpeed={0.8}
-            minDistance={4}
+            rotateSpeed={0.5}
+            minDistance={5}
             maxDistance={20}
-            enableTouchRotate={true}
+            enableRotate={true}
             touches={{
-              ONE: 2,
-              TWO: 3
+              ONE: THREE.TOUCH.ROTATE,
+              TWO: THREE.TOUCH.DOLLY_PAN
             }}
           />
           <Stats />

@@ -271,6 +271,8 @@ const cities = [
 const FullScreenGlobe = () => {
   const globeRef = useRef<any>();
   const [arcs, setArcs] = useState<any[]>([]);
+  const globeImageUrl = "//unpkg.com/three-globe/example/img/earth-night.jpg";
+  const bumpImageUrl = "//unpkg.com/three-globe/example/img/earth-topology.png";
 
   useEffect(() => {
     const globe = globeRef.current;
@@ -451,33 +453,26 @@ const FullScreenGlobe = () => {
   }, []);
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
+    <div className="w-full h-full">
       <Globe
         ref={globeRef}
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
-        bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+        globeImageUrl={globeImageUrl}
+        bumpImageUrl={bumpImageUrl}
         arcsData={arcs}
         arcStartLat={(d: any) => d.startLat}
         arcStartLng={(d: any) => d.startLng}
         arcEndLat={(d: any) => d.endLat}
         arcEndLng={(d: any) => d.endLng}
-        arcAlt={(d: any) => d.arcAlt}
-        arcColor={() => ['#00ffff', '#ff00ff']}
-        arcDashLength={0.4}
-        arcDashGap={2}
-        arcDashInitialGap={() => Math.random() * 2}
-        arcDashAnimateTime={4000}
-        pointsData={cities}
-        pointLat={(d: any) => d.lat}
-        pointLng={(d: any) => d.lng}
-        pointColor={() => '#ff0000'}
-        pointAltitude={0.01}
-        pointRadius={0.5}
-        pointsMerge={true}
-        onPointClick={(marker: any) => alert(`You clicked on ${marker.name}`)}
-        showAtmosphere={true}
-        atmosphereColor="#3a228a"
-        atmosphereAltitude={0.25}
+        arcColor={(d: any) => d.color}
+        arcAltitude={(d: any) => d.altitude}
+        arcStroke={(d: any) => d.stroke}
+        arcDashLength={(d: any) => d.dashLength}
+        arcDashGap={(d: any) => d.dashGap}
+        arcDashAnimateTime={(d: any) => d.dashAnimateTime}
+        arcLabel={(d: any) => d.label}
+        onArcClick={(d: any) => d.onClick}
+        atmosphereColor="lightskyblue"
+        atmosphereAltitude={0.1}
       />
     </div>
   );
