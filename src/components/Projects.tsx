@@ -192,6 +192,7 @@ const Projects = () => {
                   <div className="relative rounded-lg overflow-hidden mb-6 aspect-video bg-gray-900">
                     <img 
                       src={project.image} 
+                      loading="lazy"
                       alt={project.project_name} 
                       className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 filter"
                     />

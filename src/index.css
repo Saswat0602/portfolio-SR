@@ -84,27 +84,6 @@ html {
   overflow-x: hidden;
 }
 
-/* Enhanced smooth scrolling without premium plugins */
-.enhanced-smooth-scroll {
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch; /* For better mobile scrolling */
-  overscroll-behavior-y: none; /* Prevents bouncing effect on some browsers */
-  scrollbar-width: thin; /* For Firefox */
-}
-
-.enhanced-smooth-scroll::-webkit-scrollbar {
-  width: 6px; /* For Chrome and other WebKit browsers */
-}
-
-.enhanced-smooth-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(100, 116, 139, 0.5);
-  border-radius: 3px;
-}
-
-.enhanced-smooth-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 /* Optimize scroll animation for reveal effects */
 .section-reveal {
   opacity: 0;
@@ -124,25 +103,10 @@ body {
   text-rendering: optimizeSpeed;
 }
 
-/* Prevent layout shifts during theme changes */
-.layout-container {
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 /* Improve scrolling performance */
 * {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-}
-
-/* Apply will-change only when animating */
-.animate-only {
-  will-change: transform, opacity;
-}
-
-/* Hardware acceleration for animations */
-.hardware-accelerated {
-  transform: translateZ(0);
 }
 
 /* Reduce transitions on low-power devices */
@@ -335,153 +299,6 @@ body {
     from { text-shadow: 0 0 5px rgba(37, 99, 235, 0.3); }
     to { text-shadow: 0 0 15px rgba(37, 99, 235, 0.7); }
   }
-
-  /* Animated underline for headings */
-  .animated-underline {
-    position: relative;
-    display: inline-block;
-  }
-
-  .animated-underline::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -5px;
-    width: 0;
-    height: 2px;
-    background-color: #2563eb;
-    transition: width 0.3s ease;
-  }
-
-  .animated-underline:hover::after {
-    width: 100%;
-  }
-
-  /* Link animations */
-  .animated-link {
-    position: relative;
-    transition: color 0.3s;
-  }
-
-  .animated-link:hover {
-    color: #6366f1;
-  }
-
-  .animated-link::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    transform: scaleX(0);
-    height: 1px;
-    bottom: -2px;
-    left: 0;
-    background-color: #6366f1;
-    transform-origin: bottom right;
-    transition: transform 0.3s ease-out;
-  }
-
-  .animated-link:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-  }
-
-  /* Contact item hover effect */
-  .contact-item {
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s, transform 0.3s;
-  }
-
-  .contact-item:hover {
-    background-color: rgba(37, 99, 235, 0.05);
-    transform: translateX(5px);
-  }
-
-  /* Project card animations */
-  .project-card {
-    transform-style: preserve-3d;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .project-card:hover {
-    transform: translateY(-10px) rotateY(5deg);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  }
-
-  .project-card:hover h3 {
-    color: #2563eb;
-  }
-  
-  /* Link animation */
-  .link-animated {
-    position: relative;
-  }
-
-  .link-animated::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    transform: scaleX(0);
-    height: 1px;
-    bottom: -2px;
-    left: 0;
-    background-color: #2563eb;
-    transform-origin: bottom right;
-    transition: transform 0.3s ease-out;
-  }
-
-  .link-animated:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-  }
-  
-  /* Skill card hover effects */
-  .skill-card {
-    transition: transform 0.3s, box-shadow 0.3s;
-    transform-style: preserve-3d;
-  }
-
-  .skill-card:hover {
-    transform: translateZ(20px);
-  }
-
-  .skill-icon {
-    transition: transform 0.3s ease;
-  }
-
-  .skill-card:hover .skill-icon {
-    transform: scale(1.2) rotate(360deg);
-    color: #6366f1;
-  }
-  
-  /* Image hover mask effect */
-  .image-mask {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    transition: filter 0.3s ease;
-  }
-  
-  .image-mask:hover {
-    filter: contrast(1.1) brightness(1.1);
-  }
-
-  /* Paragraph animation */
-  .paragraph-animation {
-    transition: all 0.3s ease;
-    border-left: 0px solid transparent;
-    padding-left: 0px;
-  }
-  
-  .paragraph-animation:hover {
-    border-left: 3px solid #2563eb;
-    padding-left: 10px;
-    background-color: rgba(37, 99, 235, 0.05);
-  }
-  
-  /* Split text animation */
-  .split-text {
-    overflow: hidden;
-    line-height: 1.8;
-  }
 }
 
 /* Add GSAP ScrollTrigger markers for development (remove in production) */
@@ -492,3 +309,21 @@ body {
   display: none !important;
 }
 
+/* Base styles for sections before they appear */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+/* Style for sections that are visible */
+.section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Add minimum height to ensure sections have space */
+.section-reveal {
+  min-height: 200px;
+}

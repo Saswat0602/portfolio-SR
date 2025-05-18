@@ -1,0 +1,68 @@
+/* galaxy-background.css - CSS-only galaxy effect */
+
+.galaxy-background {
+    background-color: #000;
+    background-image:
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+        radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+        radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+    background-size:
+        150px 150px,
+        200px 200px,
+        100px 100px,
+        250px 250px,
+        300px 300px;
+    position: relative;
+    opacity: 0.8;
+}
+
+/* Create larger bright stars with pseudo elements */
+.galaxy-background::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 30% 20%, white 1px, transparent 4px),
+        radial-gradient(circle at 70% 65%, white 1px, transparent 4px),
+        radial-gradient(circle at 15% 75%, white 1px, transparent 4px),
+        radial-gradient(circle at 85% 25%, white 1px, transparent 4px),
+        radial-gradient(circle at 50% 50%, white 1px, transparent 4px);
+    opacity: 0.7;
+}
+
+/* Add subtle glow effect */
+.galaxy-background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 40%, rgba(63, 94, 251, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 80% 60%, rgba(94, 63, 251, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.3) 0%, transparent 50%);
+}
+
+/* Animation for twinkling effect */
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.galaxy-background {
+    animation: twinkle 8s ease-in-out infinite;
+}
+
+/* Create glowing nebula overlays with minimal CPU impact */
+.galaxy-background::before {
+    animation: twinkle 5s ease-in-out infinite;
+}
+
+.galaxy-background::after {
+    animation: twinkle 7s ease-in-out infinite;
+    animation-delay: 2s;
+}

@@ -1,124 +1,114 @@
-/* Floating tech items */
-.floating-tech-container {
-    pointer-events: none;
-}
+/* hero.css - with CSS-only animations to reduce JavaScript execution */
 
-.floating-tech-item {
-    position: absolute;
-    font-family: monospace;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
-    text-shadow: 0 0 8px rgba(0, 100, 255, 0.5);
-    pointer-events: none;
-    white-space: nowrap;
-    filter: blur(0.5px);
-    will-change: transform;
-}
-
-.floating-tech-item .tech-icon {
-    font-size: 1.2rem;
-    margin-right: 0.5rem;
-    vertical-align: middle;
-}
-
-/* Existing particle styles */
-.hero-particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    pointer-events: none;
-    animation: float-particle linear infinite;
-}
-
-@keyframes float-particle {
-    0% {
-        transform: translateY(0) translateX(0);
-        opacity: 0;
-    }
-
-    50% {
-        opacity: 0.5;
-    }
-
-    100% {
-        transform: translateY(-100px) translateX(100px);
-        opacity: 0;
-    }
-}
-
-
-/* Tech grid container */
-.tech-container {
-    pointer-events: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
-.tech-item {
-    transition: filter 0.3s ease;
-    will-change: transform, filter;
+/* Base animations that don't rely on JS */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
-
-/* Tech item styling */
-.tech-item {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    transform-origin: center center;
-    will-change: transform;
-    transition: filter 0.3s ease;
-    width: 120px;
-    height: 120px;
-    margin-left: -60px;
-    /* Half width for true centering */
-    margin-top: -60px;
-    /* Half height for true centering */
-    transform: translate3d(0, 0, 0);
-    /* Force GPU acceleration */
-}
-
-/* Icon */
-.tech-item .tech-icon {
-    font-size: 2.5rem;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.7));
-}
-
-/* Name */
-.tech-item .tech-name {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.9);
-    text-align: center;
-    margin-top: 8px;
-    text-shadow: 0 0 15px rgba(0, 100, 255, 0.8);
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+    animation-delay: 1s;
+  }
+  
+  /* Pure CSS typing animation */
+  .css-typing {
+    width: 0;
     white-space: nowrap;
-}
-
-/* Custom glowing effect */
-@keyframes tech-glow {
-
-    0%,
-    100% {
-        filter: drop-shadow(0 0 5px rgba(37, 99, 235, 0.5));
+    overflow: hidden;
+    border-right: 3px solid currentColor;
+    animation: typing 2.5s steps(30, end) 0.8s forwards,
+               blink-caret 0.75s step-end infinite;
+  }
+  
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: currentColor }
+  }
+  
+  /* CSS-only particles - no JS needed */
+  .particles-container {
+    position: relative;
+  }
+  
+  .particles-container::before,
+  .particles-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    border-radius: 50%;
+    transform: scale(0);
+    animation: pulse 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+  
+  .particles-container::after {
+    animation-delay: 4s;
+  }
+  
+  @keyframes pulse {
+    0% {
+      opacity: 0;
+      transform: scale(0.2);
     }
-
     50% {
-        filter: drop-shadow(0 0 15px rgba(37, 99, 235, 1));
+      opacity: 0.3;
     }
-}
-
-.tech-item .tech-icon {
-    animation: tech-glow 3s infinite ease-in-out;
-}
+    100% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+  }
+  
+  /* Generate pseudo-element particles with CSS only */
+  .particles-container::before {
+    box-shadow:
+      calc(10vw) calc(10vh) 2px rgba(255, 255, 255, 0.3),
+      calc(20vw) calc(80vh) 2px rgba(255, 255, 255, 0.3),
+      calc(30vw) calc(15vh) 2px rgba(255, 255, 255, 0.3),
+      calc(40vw) calc(70vh) 2px rgba(255, 255, 255, 0.3),
+      calc(50vw) calc(40vh) 2px rgba(255, 255, 255, 0.3),
+      calc(60vw) calc(30vh) 2px rgba(255, 255, 255, 0.3),
+      calc(70vw) calc(65vh) 2px rgba(255, 255, 255, 0.3),
+      calc(80vw) calc(45vh) 2px rgba(255, 255, 255, 0.3),
+      calc(90vw) calc(85vh) 2px rgba(255, 255, 255, 0.3);
+  }
+  
+  /* Button glow effects without JS */
+  .btn-glow {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-glow::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+    z-index: -1;
+    opacity: 0;
+    border-radius: 0.375rem;
+    transition: opacity 0.3s ease;
+  }
+  
+  .btn-glow:hover::before {
+    opacity: 0.7;
+  }
+  
+  /* Glowing text effect for dark mode */
+  .glowing-text {
+    text-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+  }
