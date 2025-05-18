@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 import Hero from '@/components/Hero';
 import About from '@/components/About';
@@ -22,68 +22,109 @@ if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
   observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // Use classList instead of state for better performance
         entry.target.classList.add('visible');
       }
     });
   }, observerOptions);
 }
 
+// Mobile-optimized component wrapper
+const MobileOptimizedSection = ({ children, isMobile, id, className = '' }) => {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (sectionRef.current && observer) {
+      observer.observe(sectionRef.current);
+    }
+  }, []);
+
+  return (
+    <div 
+      ref={sectionRef} 
+      id={id}
+      className={`section-reveal ${isMobile ? 'mobile-optimize' : ''} ${className}`}
+    >
+      {children}
+    </div>
+  );
+};
+
 const Index = () => {
   const mainRef = useRef(null);
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const [isMobile, setIsMobile] = useState(false);
   
-  // Use ref callback pattern for better performance - no extra useEffect needed
-  const sectionRef = (element) => {
-    if (element && observer) {
-      observer.observe(element);
-    }
-  };
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   // Apply dark/light mode through CSS variables for better performance
   const bgClass = isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900';
 
   return (
     <div ref={mainRef} className={`min-h-screen ${bgClass} will-change-auto`}>
-      <div id="home">
+      <MobileOptimizedSection isMobile={isMobile} id="home">
         <Hero />
-      </div>
+      </MobileOptimizedSection>
       
-      {/* Preload critical sections with visible class already */}
-      <div ref={sectionRef} className="section-reveal visible" id={sections.about}>
+      <MobileOptimizedSection isMobile={isMobile} id={sections.about}>
         <About />
-      </div>
+      </MobileOptimizedSection>
       
-      <div ref={sectionRef} className="section-reveal visible" id={sections.experience}>
+      <MobileOptimizedSection isMobile={isMobile} id={sections.experience}>
         <Experience />
-      </div>
+      </MobileOptimizedSection>
       
-      <div ref={sectionRef} className="section-reveal visible" id={sections.skills}>
+      <MobileOptimizedSection isMobile={isMobile} id={sections.skills}>
         <Skills />
-      </div>
+      </MobileOptimizedSection>
       
-      <div ref={sectionRef} className="section-reveal visible" id={sections.projects}>
+      <MobileOptimizedSection isMobile={isMobile} id={sections.projects}>
         <Projects />
-      </div>
+      </MobileOptimizedSection>
       
-      <div ref={sectionRef} className="section-reveal visible" id={sections.contact}>
+      <MobileOptimizedSection isMobile={isMobile} id={sections.contact}>
         <Contact />
-      </div>
+      </MobileOptimizedSection>
       
-      <div ref={sectionRef} className="section-reveal visible" id="footer">
+      <MobileOptimizedSection isMobile={isMobile} id="footer">
         <Footer />
-      </div>
+      </MobileOptimizedSection>
     </div>
   );
 };
 
-// Add module-level preloading for critical paths
-// This forces webpack to load these modules during initial bundle
+// Add mobile-specific styles
 if (typeof window !== 'undefined') {
-  // Pre-evaluate critical components
-  const preloadComponents = [Hero, About];
-  preloadComponents.forEach(component => !!component);
+  const style = document.createElement('style');
+  style.textContent = `
+    @media (max-width: 768px) {
+      .mobile-optimize {
+        transform: none !important;
+      }
+      .mobile-optimize * {
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+      }
+      .section-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .section-reveal.visible {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
 }
 
 export default Index;

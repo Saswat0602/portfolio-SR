@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, lazy, Suspense, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +9,6 @@ import { routes } from "./lib/config";
 import { ThemeProvider } from "./lib/ThemeContext";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 
-// Eliminate loading screen component entirely, use inline minimal loader
 // Import critical path components directly
 import Index from "./pages/Index";
 
@@ -23,12 +22,7 @@ const queryClient = new QueryClient({
   },
 });
 
-// Pre-load critical components
-// Note: this code runs during initial module evaluation (before rendering)
-import("./reactbits/SplashCursor");
-
-// Lazily load non-critical components
-const SplashCursor = lazy(() => import("./reactbits/SplashCursor"));
+// Lazy load components with mobile detection
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Playground = lazy(() => import("./components/Playground"));
 const RubiksCubeScene = lazy(() => import("./components/RubiksCube"));
@@ -49,6 +43,18 @@ const MinimalLoader = () => (
 
 // Combined layouts with shared logic
 const Layout = ({ children, isPlayground = false }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Setup scroll behavior and event listeners once per component mount
   useState(() => {
     // Initialize UI enhancments
@@ -87,7 +93,31 @@ const Layout = ({ children, isPlayground = false }) => {
   );
 };
 
+// Mobile-optimized component wrapper
+const MobileOptimizedComponent = ({ children, isMobile }) => {
+  if (isMobile) {
+    return (
+      <div className="mobile-optimize">
+        {children}
+      </div>
+    );
+  }
+  return children;
+};
+
 const App = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Use inline styles for critical path rendering
   const inlineStyle = document.createElement('style');
   inlineStyle.innerHTML = `
@@ -95,6 +125,11 @@ const App = () => {
     .fade-in { opacity: 1; transition: opacity 0.3s ease-in; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .animate-spin { animation: spin 0.8s linear infinite; }
+    @media (max-width: 768px) {
+      .mobile-optimize { transform: none !important; }
+      .mobile-optimize * { transform: none !important; }
+      .mobile-optimize .animate-spin { animation: none; }
+    }
   `;
   document.head.appendChild(inlineStyle);
 
@@ -110,9 +145,6 @@ const App = () => {
               transition={{ duration: 0.2 }}
               className="hardware-accelerated fade-in"
             >
-              <Suspense fallback={<MinimalLoader />}>
-                <SplashCursor />
-              </Suspense>
               <Sonner />
               <BrowserRouter>
                 <Routes>
@@ -120,46 +152,46 @@ const App = () => {
                     path={routes.home}
                     element={<Layout><Index /></Layout>}
                   />
-                  <Route
-                    path={routes.playground}
-                    element={<Layout><Playground /></Layout>}
-                  />
-
-                  <Route
-                    path={routes.worlds.globe}
-                    element={<Layout isPlayground><FullScreenGlobe /></Layout>}
-                  />
-                  <Route
-                    path={routes.worlds.galaxy}
-                    element={<Layout isPlayground><GalaxyScene /></Layout>}
-                  />
-                  <Route
-                    path={routes.worlds.cosmicSphere}
-                    element={<Layout isPlayground><CosmicSphere /></Layout>}
-                  />
-                  <Route
-                    path={routes.worlds.cube2}
-                    element={<Layout isPlayground><Cube2 /></Layout>}
-                  />
-                  <Route
-                    path={routes.worlds.cube3}
-                    element={<Layout isPlayground><RubiksCubeShuffle /></Layout>}
-                  />
-
-                  {/* Games */}
-                  <Route
-                    path={routes.games.rubiksCube}
-                    element={<Layout isPlayground><RubiksCubeScene /></Layout>}
-                  />
-                  <Route
-                    path={routes.games.snake}
-                    element={<Layout isPlayground><SnakeGame /></Layout>}
-                  />
-                  <Route
-                    path={routes.games.carGame}
-                    element={<Layout isPlayground><CarGame /></Layout>}
-                  />
-
+                  {!isMobile && (
+                    <>
+                      <Route
+                        path={routes.playground}
+                        element={<Layout><Playground /></Layout>}
+                      />
+                      <Route
+                        path={routes.worlds.globe}
+                        element={<Layout isPlayground><FullScreenGlobe /></Layout>}
+                      />
+                      <Route
+                        path={routes.worlds.galaxy}
+                        element={<Layout isPlayground><GalaxyScene /></Layout>}
+                      />
+                      <Route
+                        path={routes.worlds.cosmicSphere}
+                        element={<Layout isPlayground><CosmicSphere /></Layout>}
+                      />
+                      <Route
+                        path={routes.worlds.cube2}
+                        element={<Layout isPlayground><Cube2 /></Layout>}
+                      />
+                      <Route
+                        path={routes.worlds.cube3}
+                        element={<Layout isPlayground><RubiksCubeShuffle /></Layout>}
+                      />
+                      <Route
+                        path={routes.games.rubiksCube}
+                        element={<Layout isPlayground><RubiksCubeScene /></Layout>}
+                      />
+                      <Route
+                        path={routes.games.snake}
+                        element={<Layout isPlayground><SnakeGame /></Layout>}
+                      />
+                      <Route
+                        path={routes.games.carGame}
+                        element={<Layout isPlayground><CarGame /></Layout>}
+                      />
+                    </>
+                  )}
                   {/* 404 Not Found */}
                   <Route
                     path="*"
